@@ -8,7 +8,7 @@ import './global.css';
 
 const posts = [
   {
-    id: 1,
+    id: '1',
     author: {
       avatarUrl: 'https://github.com/alanolimpio.png',
       name: 'Alan Olimpio',
@@ -29,22 +29,37 @@ const posts = [
     ],
     tags: [
       {
+        id: '1',
         link: 'https://github.com/AlanOlimpio/ignitefeed',
         content: '#novoprojeto',
       },
       {
+        id: '2',
         link: 'https://github.com/AlanOlimpio/ignitefeed',
         content: '#nlw',
       },
       {
+        id: '3',
         link: 'https://github.com/AlanOlimpio/ignitefeed',
         content: '#rocketseat',
+      },
+    ],
+    comments: [
+      {
+        id: '1',
+        author: {
+          avatarUrl: 'https://github.com/diego3g.png',
+          name: 'Diego Fernandes',
+        },
+        content: 'Muito bom Alan Olimpio, parabéns!! 👏👏',
+        publishedAt: new Date('2024-07-03 12:25:00'),
+        like: 1,
       },
     ],
     publishedAt: new Date('2024-07-03 12:25:00'),
   },
   {
-    id: 1,
+    id: '2',
     author: {
       avatarUrl: 'https://github.com/diego3g.png',
       name: 'Diego Fernandes',
@@ -65,18 +80,22 @@ const posts = [
     ],
     tags: [
       {
+        id: '4',
         link: 'https://github.com/AlanOlimpio/ignitefeed',
         content: '#novoprojeto',
       },
       {
+        id: '5',
         link: 'https://github.com/AlanOlimpio/ignitefeed',
         content: '#nlw',
       },
       {
+        id: '6',
         link: 'https://github.com/AlanOlimpio/ignitefeed',
         content: '#rocketseat',
       },
     ],
+    comments: [],
     publishedAt: new Date('2024-05-03 20:00:00'),
   },
   ,
@@ -93,10 +112,12 @@ export function App() {
             return (
               <Post
                 key={post.id}
+                id={post.id}
                 author={post.author}
                 content={post.content}
                 publishedAt={post.publishedAt}
                 tags={post.tags}
+                comments={post.comments}
               />
             );
           })}
