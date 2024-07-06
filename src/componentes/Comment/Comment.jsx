@@ -26,6 +26,13 @@ export function Comment({
     locale: ptBR,
     addSuffix: true,
   });
+
+  function handleLikeComment() {
+    setCountLike((state) => {
+      return state + 1;
+    });
+  }
+
   return (
     <div className={styles.comment}>
       <Avatar hasBorder={false} src={author.avatarUrl} alt={author.name} />
@@ -54,7 +61,7 @@ export function Comment({
         </div>
 
         <footer>
-          <button onClick={() => setCountLike(countLike + 1)}>
+          <button onClick={handleLikeComment}>
             <ThumbsUp />
             Aplaudir {countLike > 0 && <span>{countLike}</span>}
           </button>
