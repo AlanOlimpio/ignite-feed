@@ -62,6 +62,13 @@ export function Post({ author, publishedAt, content, tags, comments, id }) {
     setNewCommentText(event.target.value);
   }
 
+  function handleDeleteComment(commentId) {
+    const commentsListTemp = commentsList.filter(
+      (item) => item.id !== commentId,
+    );
+    setCommentsList(commentsListTemp);
+  }
+
   return (
     <article className={styles.post}>
       <header>
@@ -119,6 +126,7 @@ export function Post({ author, publishedAt, content, tags, comments, id }) {
           onChange={(e) => handleNewComentChange(e)}
           placeholder="Deixe um comentário"
           value={newCommentText}
+          required
         />
 
         <footer>
@@ -135,6 +143,7 @@ export function Post({ author, publishedAt, content, tags, comments, id }) {
               content={item.content}
               publishedAt={item.publishedAt}
               like={item.like}
+              onDeleteComment={(id) => handleDeleteComment(id)}
             />
           );
         })}

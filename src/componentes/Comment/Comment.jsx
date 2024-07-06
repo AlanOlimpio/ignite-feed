@@ -5,7 +5,14 @@ import { ThumbsUp, Trash } from 'phosphor-react';
 import Avatar from '../Avatar';
 import styles from './Comment.module.css';
 
-export function Comment({ author, content, publishedAt, like }) {
+export function Comment({
+  author,
+  content,
+  publishedAt,
+  like,
+  id,
+  onDeleteComment,
+}) {
   const [countLike, setCountLike] = useState(like);
   const publishedDateFormatted = format(
     publishedAt,
@@ -35,7 +42,10 @@ export function Comment({ author, content, publishedAt, like }) {
               </time>
             </div>
 
-            <button title="Deletar comentário">
+            <button
+              onClick={() => onDeleteComment(id)}
+              title="Deletar comentário"
+            >
               <Trash size={24} />
             </button>
           </header>
