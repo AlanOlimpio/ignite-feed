@@ -2,11 +2,19 @@ import Post from './componentes/Post';
 import Header from './componentes/Header';
 import Sidebar from './componentes/Sidebar';
 
-import * as styles from './App.module.css';
+import styles from './App.module.css';
 
 import './global.css';
+import { PostInterfaceProps } from './interfaces/Posts';
 
-const posts = [
+const sidebar = {
+  author: {
+    avatarUrl: 'https://github.com/alanolimpio.png',
+    name: 'Alan Olimpio',
+    role: 'Front end',
+  },
+};
+const posts: PostInterfaceProps[] = [
   {
     id: '1',
     author: {
@@ -98,7 +106,6 @@ const posts = [
     comments: [],
     publishedAt: new Date('2024-05-03 20:00:00'),
   },
-  ,
 ];
 
 export function App() {
@@ -106,20 +113,10 @@ export function App() {
     <div>
       <Header />
       <div className={styles.wrapper}>
-        <Sidebar />
+        <Sidebar author={sidebar.author} />
         <main>
           {posts.map((post) => {
-            return (
-              <Post
-                key={post.id}
-                id={post.id}
-                author={post.author}
-                content={post.content}
-                publishedAt={post.publishedAt}
-                tags={post.tags}
-                comments={post.comments}
-              />
-            );
+            return <Post key={post.id} post={post} />;
           })}
         </main>
       </div>

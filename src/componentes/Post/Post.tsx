@@ -1,34 +1,38 @@
-import React, { useState } from 'react';
+import { ChangeEvent, FormEvent, InvalidEvent, useState } from 'react';
 import { format, formatDistanceToNow } from 'date-fns';
-import ptBR from 'date-fns/locale/pt-BR';
+import { ptBR } from 'date-fns/locale';
 import Avatar from '../Avatar';
 import Comment from '../Comment';
-import styles from './Post.module.css';
+import Styled from './Post.module.css';
+import {
+  PostInterfaceProps,
+  PostItemInterfaceProps,
+} from '../../interfaces/Posts';
 
-export function Post({ author, publishedAt, content, tags, comments, id }) {
-  const [commentsList, setCommentsList] = useState(comments);
+export function Post({ post }: PostItemInterfaceProps) {
+  const [commentsList, setCommentsList] = useState(post.comments);
   const [newCommentText, setNewCommentText] = useState('');
 
   const publishedDateFormatted = format(
-    publishedAt,
+    post.publishedAt,
     "d 'de' LLLL 'às' HH:mm'h'",
     {
       locale: ptBR,
     },
   );
 
-  const publishedDateRelativeToNow = formatDistanceToNow(publishedAt, {
+  const publishedDateRelativeToNow = formatDistanceToNow(post.publishedAt, {
     locale: ptBR,
     addSuffix: true,
   });
 
   const isNewCommentEmpty = newCommentText.length === 0;
 
-  function handleCreateNewComment(event) {
+  function handleCreateNewComment(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const commentsTemp = commentsList[commentsList.length - 1];
     const newCommentsId = commentsTemp?.id ? parseInt(commentsTemp.id) + 1 : 1;
-    if (parseInt(id) % 2 !== 0) {
+    if (parseInt(post.id) % 2 !== 0) {
       setCommentsList([
         ...commentsList,
         {
@@ -60,16 +64,19 @@ export function Post({ author, publishedAt, content, tags, comments, id }) {
     setNewCommentText('');
   }
 
-  function handleNewComentChange(event) {
+  function handleNewComentChange(event: ChangeEvent<HTMLTextAreaElement>) {
     event.target.setCustomValidity('');
     setNewCommentText(event.target.value);
   }
 
-  function handleNewCommentInvalid(event) {
-    event.target.setCustomValidity('Esse campo é obrigatório!');
+  function handleNewCommentInvalid(event: FormEvent<HTMLTextAreaElement>) {
+    const eventTarget = event as InvalidEvent<HTMLTextAreaElement>;
+    eventTarget.target.setCustomValidity('Esse campo é obrigatório!');
   }
 
-  function handleDeleteComment(commentId) {
+  function handleDeleteComment(
+    commentId: PostInterfaceProps['comments'][0]['id'],
+  ) {
     const commentsListTemp = commentsList.filter(
       (item) => item.id !== commentId,
     );
@@ -77,26 +84,26 @@ export function Post({ author, publishedAt, content, tags, comments, id }) {
   }
 
   return (
-    <article className={styles.post}>
+    <article className={Styled.post}>
       <header>
-        <div className={styles.author}>
-          <Avatar src={author.avatarUrl} alt={author.name} />
-          <div className={styles.authorInfo}>
-            <strong>{author.name}</strong>
-            <span>{author.role}</span>
+        <div className={Styled.author}>
+          <Avatar src={post.author.avatarUrl} alt={post.author.name} />
+          <div className={Styled.authorInfo}>
+            <strong>{post.author.name}</strong>
+            <span>{post.author.role}</span>
           </div>
         </div>
 
         <time
           title={publishedDateFormatted}
-          dateTime={publishedAt.toISOString()}
+          dateTime={post.publishedAt.toISOString()}
         >
           {publishedDateRelativeToNow}
         </time>
       </header>
 
-      <div className={styles.content}>
-        {content.map((item, index) => {
+      <div className={Styled.content}>
+        {post.content.map((item, index) => {
           if (item.type === 'paragraph') {
             return <p key={index}>{item.content}</p>;
           }
@@ -113,7 +120,7 @@ export function Post({ author, publishedAt, content, tags, comments, id }) {
         })}
 
         <p>
-          {tags.map((item, index) => {
+          {post.tags.map((item, index) => {
             return (
               <a key={index} href={item.link} target="_blank">
                 {item.content}
@@ -124,7 +131,7 @@ export function Post({ author, publishedAt, content, tags, comments, id }) {
       </div>
       <form
         onSubmit={(e) => handleCreateNewComment(e)}
-        className={styles.commentForm}
+        className={Styled.commentForm}
       >
         <strong>Deixe seu feedback</strong>
 
@@ -143,7 +150,7 @@ export function Post({ author, publishedAt, content, tags, comments, id }) {
           </button>
         </footer>
       </form>
-      <div className={styles.commentList}>
+      <div className={Styled.commentList}>
         {commentsList.map((item) => {
           return (
             <Comment

@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { format, formatDistanceToNow } from 'date-fns';
-import ptBR from 'date-fns/locale/pt-BR';
+import { ptBR } from 'date-fns/locale';
 import { ThumbsUp, Trash } from 'phosphor-react';
 import Avatar from '../Avatar';
-import styles from './Comment.module.css';
+import Styled from './Comment.module.css';
+import { CommentInterfaceProps } from '../../interfaces/Comment';
 
 export function Comment({
   author,
@@ -12,7 +13,7 @@ export function Comment({
   like,
   id,
   onDeleteComment,
-}) {
+}: CommentInterfaceProps) {
   const [countLike, setCountLike] = useState(like);
   const publishedDateFormatted = format(
     publishedAt,
@@ -34,12 +35,12 @@ export function Comment({
   }
 
   return (
-    <div className={styles.comment}>
+    <div className={Styled.comment}>
       <Avatar hasBorder={false} src={author.avatarUrl} alt={author.name} />
-      <div className={styles.commentBox}>
-        <div className={styles.commentContent}>
+      <div className={Styled.commentBox}>
+        <div className={Styled.commentContent}>
           <header>
-            <div className={styles.authorAndTime}>
+            <div className={Styled.authorAndTime}>
               <strong>{author.name}</strong>
               <time
                 title={publishedDateFormatted}
